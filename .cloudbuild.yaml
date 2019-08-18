@@ -1,0 +1,22 @@
+steps:
+- name: gcr.io/cloud-builders/gcloud
+  args:
+  - kms
+  - decrypt
+  - --ciphertext-file=.env.enc
+  - --plaintext-file=.env
+  - --location=global
+  - --keyring=yaml-snippets
+  - --key=yaml-snippets-env
+  id: DECRYPT
+  waitFor: ['-']
+
+- name: 'gcr.io/$PROJECT_ID/yaml-snippets-server'
+  args: ['npm', 'install']
+
+- name: 'gcr.io/$PROJECT_ID/yaml-snippets-server'
+  args: ['npm', 'install']
+  dir: 'functions'
+
+- name: 'gcr.io/$PROJECT_ID/yaml-snippets-server'
+  args: ['npm', 'run', 'deploy']

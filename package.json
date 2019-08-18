@@ -1,0 +1,9 @@
+{
+    "name": "yaml-snippets-server",
+    "version": "0.1.0",
+    "description": "",
+    "scripts": {
+        "deploy": "firebase deploy --debug --token \"$FIREBASE_TOKEN\""
+    },
+    "author": "Llewellyn Collins"
+}
