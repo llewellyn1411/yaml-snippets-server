@@ -13,14 +13,12 @@ steps:
 
 - name: 'gcr.io/$PROJECT_ID/yaml-snippets-env'
   args: ['npm', 'install']
-  waitFor: ['-']
-
-- name: 'gcr.io/$PROJECT_ID/yaml-snippets-env'
-  args: ['npm', 'install']
   dir: 'functions'
+  id: INSTALL_FUNCTIONS
   waitFor: ['-']
 
 - name: 'gcr.io/$PROJECT_ID/yaml-snippets-env'
   args: ['npm', 'run', 'deploy']
   waitFor:
     - DECRYPT
+    - INSTALL_FUNCTIONS
