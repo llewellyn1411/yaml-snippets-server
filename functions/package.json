@@ -16,11 +16,14 @@
     },
     "main": "lib/index.js",
     "dependencies": {
+        "@types/algoliasearch": "^3.30.18",
+        "algoliasearch": "^3.34.0",
         "firebase-admin": "^8.0.0",
         "firebase-functions": "^3.0.0"
     },
     "devDependencies": {
         "@types/jest": "^24.0.15",
+        "faker": "^4.1.0",
         "firebase-functions-test": "^0.1.6",
         "jest": "^24.8.0",
         "ts-jest": "^24.0.2",

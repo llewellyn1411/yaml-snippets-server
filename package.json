@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "",
     "scripts": {
-        "deploy": "firebase deploy --debug --token \"$FIREBASE_TOKEN\""
+        "deploy": "firebase deploy --only functions --debug --token \"$FIREBASE_TOKEN\""
     },
     "author": "Llewellyn Collins"
 }
