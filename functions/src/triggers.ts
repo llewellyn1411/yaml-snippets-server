@@ -15,7 +15,7 @@ export const createUser = functions.auth.user().onCreate( ( user ) => {
         email,
         displayName,
         favourites: [],
-        starCount: 0,
+        countStar: 0,
         snippetCount: 0
     } );
 } );
@@ -25,8 +25,8 @@ export const createSnippet = functions.firestore.document( 'snippets/{snippetId}
     const id = snapshot.id;
 
     const initData = snapshot.ref.set( {
-        copyCount: 0,
-        starCount: 0
+        countCopy: 0,
+        countStar: 0
     }, { merge: true } );
 
     // Add to the algolia index
