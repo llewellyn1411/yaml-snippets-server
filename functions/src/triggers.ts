@@ -52,7 +52,10 @@ export const updateSnippet = functions.firestore.document( 'snippets/{snippetId}
     // Update the algolia object
     return index.saveObject( {
         objectID: id,
-        author: data.author.displayName,
+        author: {
+            displayName: data.author.displayName,
+            uid: data.author.uid
+        },
         name: data.name,
         description: data.description
     } );
