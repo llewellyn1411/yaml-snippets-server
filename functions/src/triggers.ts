@@ -32,7 +32,10 @@ export const createSnippet = functions.firestore.document( 'snippets/{snippetId}
     // Add to the algolia index
     const addToIndex = index.addObject( {
         objectID: id,
-        author: data.author.displayName,
+        author: {
+            displayName: data.author.displayName,
+            uid: data.author.uid,
+        },
         name: data.name,
         description: data.description,
         countCopy: 0,
