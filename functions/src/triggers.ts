@@ -49,6 +49,8 @@ export const updateSnippet = functions.firestore.document( 'snippets/{snippetId}
     const data = change.after.data();
     const id = change.after.id;
 
+    // TODO: Only update if name/description or content has changed
+
     // Update the algolia object
     return index.saveObject( {
         objectID: id,
