@@ -59,7 +59,9 @@ export const updateSnippet = functions.firestore.document( 'snippets/{snippetId}
             uid: data.author.uid
         },
         name: data.name,
-        description: data.description
+        description: data.description,
+        countCopy: data.countCopy,
+        countStar: data.countStar
     } );
 } );
 
