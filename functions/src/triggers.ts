@@ -37,7 +37,6 @@ export const createSnippet = functions.firestore.document( 'snippets/{snippetId}
             uid: data.author.uid,
         },
         name: data.name,
-        description: data.description,
         countCopy: 0,
         countStar: 0
     } );
@@ -59,7 +58,6 @@ export const updateSnippet = functions.firestore.document( 'snippets/{snippetId}
             uid: data.author.uid
         },
         name: data.name,
-        description: data.description,
         countCopy: data.countCopy,
         countStar: data.countStar
     } );
