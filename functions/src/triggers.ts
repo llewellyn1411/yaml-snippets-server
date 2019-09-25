@@ -25,7 +25,6 @@ export const createSnippet = functions.firestore.document( 'snippets/{snippetId}
     const id = snapshot.id;
 
     const initData = snapshot.ref.set( {
-        countCopy: 0,
         countStar: 0
     }, { merge: true } );
 
@@ -38,7 +37,6 @@ export const createSnippet = functions.firestore.document( 'snippets/{snippetId}
         },
         name: data.name,
         description: data.description,
-        countCopy: 0,
         countStar: 0
     } );
 
@@ -60,7 +58,6 @@ export const updateSnippet = functions.firestore.document( 'snippets/{snippetId}
         },
         name: data.name,
         description: data.description,
-        countCopy: data.countCopy,
         countStar: data.countStar
     } );
 } );
