@@ -14,7 +14,6 @@ export const createUser = functions.auth.user().onCreate( ( user ) => {
     return db.collection( 'users' ).doc( uid ).set( {
         email,
         displayName,
-        favourites: [],
         countStar: 0,
         snippetCount: 0
     } );
@@ -46,8 +45,6 @@ export const createSnippet = functions.firestore.document( 'snippets/{snippetId}
 export const updateSnippet = functions.firestore.document( 'snippets/{snippetId}' ).onUpdate( ( change ) => {
     const data = change.after.data();
     const id = change.after.id;
-
-    // TODO: Only update if name/description or content has changed
 
     // Update the algolia object
     return index.saveObject( {
