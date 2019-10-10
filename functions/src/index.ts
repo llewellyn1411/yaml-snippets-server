@@ -7,7 +7,6 @@ export { createUser, createSnippet, updateSnippet, deleteSnippet, addStar, remov
 
 // TODO: Firebase Events
 // TODO: Firebase analytics
-// TODO: Firebase roles
 // TODO: Offline firestore
 // TODO: User deletion
 // TODO: special characters

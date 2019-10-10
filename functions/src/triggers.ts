@@ -15,7 +15,8 @@ export const createUser = functions.auth.user().onCreate( ( user ) => {
         email,
         displayName,
         countStar: 0,
-        snippetCount: 0
+        snippetCount: 0,
+        role: 0
     } );
 } );
 
