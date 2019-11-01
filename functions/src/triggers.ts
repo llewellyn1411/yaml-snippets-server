@@ -1,12 +1,49 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import algoliasearch from 'algoliasearch';
-import { db } from './firebase-local';
+import { db, auth } from './firebase-local';
 
 const ALGOLIA_APP_ID = functions.config().algolia.app;
 const ALGOLIA_ADMIN_KEY = functions.config().algolia.key;
 const client = algoliasearch( ALGOLIA_APP_ID, ALGOLIA_ADMIN_KEY );
 const index = client.initIndex( 'snippets' );
+
+const deleteUserStars = ( userId: string ) => {
+    return db.collection( 'stars' ).where( 'userId', '==', userId ).get()
+        .then( ( querySnapshot ) => {
+            const batch = db.batch();
+
+            querySnapshot.forEach( ( snapshot ) => {
+                batch.delete( snapshot.ref );
+            } );
+
+            return batch.commit();
+        } );
+};
+
+const removeUserFromSnippets = ( userId: string ) => {
+    return db.collection( 'snippets' ).where( 'userId', '==', userId ).get()
+        .then( ( querySnapshot ) => {
+            const batch = db.batch();
+
+            querySnapshot.forEach( ( snapshot ) => {
+                batch.update( snapshot.ref, { author: null } );
+            } );
+
+            return batch.commit();
+        } );
+};
+
+const deleteUserAccount = ( userId: string ) => {
+    return auth.deleteUser( userId )
+        .then( () => {
+            return db.collection( 'users' ).doc( userId ).delete();
+        } );
+};
+
+const deleteAllUserData = ( userId: string ) => {
+    return Promise.all( [ removeUserFromSnippets( userId ), deleteUserStars( userId ), deleteUserAccount( userId ) ] );
+};
 
 export const createUser = functions.auth.user().onCreate( ( user ) => {
     const { email, displayName, uid } = user;
@@ -62,7 +99,7 @@ export const updateSnippet = functions.firestore.document( 'snippets/{snippetId}
 
 export const deleteSnippet = functions.firestore.document( 'snippets/{snippetId}' ).onDelete( ( snapshot ) => {
     // Delete the algolia object
-    return index.deleteObject( snapshot.id );
+    return Promise.all( [ index.deleteObject( snapshot.id ), deleteUserStars( snapshot.data().snippetId ) ] );
 } );
 
 export const addStar = functions.firestore.document( 'stars/{starId}' ).onCreate( ( snapshot ) => {
@@ -79,4 +116,10 @@ export const removeStar = functions.firestore.document( 'stars/{starId}' ).onDel
     return db.collection( 'snippets' ).doc( data.snippetId ).update( {
         countStar: admin.firestore.FieldValue.increment( -1 )
     } );
+} );
+
+export const deleteUser = functions.https.onCall( ( data, context ) => {
+    const uid = context.auth.uid;
+
+    return deleteAllUserData( uid );
 } );
